@@ -10,10 +10,58 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Joke {
-  id         String   @id @default(uuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  name       String
-  content    String
+model Admin {
+  id           String    @id @default(uuid())
+  username     String    @unique
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  Project      Project[]
+}
+
+model Project {
+  name      String     @unique
+  url       String     @unique
+  slug      String     @unique
+  projectId String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  isPublic  Boolean    @default(false)
+  User      User[]
+  Pageview  Pageview[]
+  Event     Event[]
+  Admin     Admin?     @relation(fields: [adminId], references: [id])
+  adminId   String?
+}
+
+model User {
+  userId    String    @unique
+  paths     String
+  device    String
+  country   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  Project   Project?  @relation(fields: [projectId], references: [projectId])
+  projectId String
+}
+
+model Pageview {
+  viewId      Int      @id @default(autoincrement())
+  url         String
+  ref         String?
+  referrer    String?
+  utmCampaign String?
+  utmSource   String?
+  utmMedium   String?
+  createdAt   DateTime @default(now())
+  Project     Project? @relation(fields: [projectId], references: [projectId])
+  projectId   String
+}
+
+model Event {
+  eventId   Int      @id @default(autoincrement())
+  url       String
+  name      String
+  createdAt DateTime @default(now())
+  Project   Project? @relation(fields: [projectId], references: [projectId])
+  projectId String
 }
