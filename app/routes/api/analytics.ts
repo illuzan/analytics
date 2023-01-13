@@ -2,6 +2,7 @@ import { json } from "@remix-run/node";
 import type { LoaderArgs } from "@remix-run/node";
 import { db } from "~/utils/db.server";
 import parser from "ua-parser-js";
+
 // import isbot from 'isbot'
 // import geoip from 'geoip-country'
 // Nodejs HTTP
@@ -20,7 +21,6 @@ export async function loader({ request }: LoaderArgs) {
   const device = `${usera.browser.name} ${usera.browser.major}, ${usera.os.name}`;
   console.log(request.method);
   const requestUrl = new URL(request.url);
-  //   console.log(url);
   const term = requestUrl.searchParams;
   console.log(term);
   // const projectID = requestUrl.searchParams.get("client_id");
@@ -33,16 +33,22 @@ export async function loader({ request }: LoaderArgs) {
   const height = requestUrl.searchParams.get("h");
   if (typeof uid === "string" && typeof projectID === "string") {
     try {
-      const data = await db.user.upsert({
-        where: { userId: uid },
-        update: {},
-        create: {
-          userId: uid,
-          device: device,
+      // const data = await db.user.upsert({
+      //   where: { userId: uid },
+      //   update: {},
+      //   create: {
+      //     userId: uid,
+      //     device: device,
+      //     projectId: projectID,
+      //     Path: { create: [{ path: "test" }] },
+      //   },
+      // });
+      const data =await db.pageview.create({
+        data: {
+          url: requestUrl.pathname,
           projectId: projectID,
-          Path: { create: [{ path: "test" }] },
         },
-      });
+      })
       console.log(data)
     } catch (error) {
       console.log(error);
