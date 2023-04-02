@@ -1,0 +1,8 @@
+# compatibility_date = "2022-04-05"
+compatibility_flags = ["streams_enable_constructors"]
+
+[[ d1_databases ]]
+binding = "DB"
+database_name = "analytics"
+database_id = "8a631a35-f784-4b24-9fb0-071a7b23a579"
+

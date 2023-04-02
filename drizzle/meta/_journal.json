@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1680432773657,
+      "tag": "0000_orange_arclight",
+      "breakpoints": false
+    }
+  ]
+}
